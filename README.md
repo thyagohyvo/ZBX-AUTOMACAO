@@ -2,6 +2,9 @@
 
 Painel web para automatizar tarefas operacionais recorrentes de um ambiente **Zabbix**: criação de dependências de trigger, monitoramento de housekeeping, importação em massa de hosts via CSV, gestão de janelas de manutenção, identificação de itens sem coleta de dados e ranking de hosts mais problemáticos.
 
+<img width="1919" height="762" alt="03" src="https://github.com/user-attachments/assets/854e6dee-10ee-4fbd-ab37-6d79eeac8064" />
+
+
 Backend em **Flask (Python)** consumindo a **Zabbix API (JSON-RPC)**, frontend em **HTML/CSS/JavaScript puro** (sem frameworks).
 
 ---
