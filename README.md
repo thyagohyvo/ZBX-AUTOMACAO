@@ -181,4 +181,4 @@ olt-01,10.0.0.20,OLTs,ICMP-OLT-Base|SNMP-OLT,monitor,161,2,site:RJ,LOCATION:data
 
 ## 📝 Licença
 
-Defina aqui a licença do projeto (ex: MIT).
+MIT - sinta-se livre para usar, modificar e distribuir. Se este card te ajudou e você for compartilhar em alguma rede social, blog ou fórum, considere fazer uma referência a este repositório como base. Isso ajuda a comunidade a encontrar o projeto e contribui para que mais pessoas se beneficiem da solução. 🙌 🔗
