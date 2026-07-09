@@ -22,6 +22,8 @@ Backend em **Flask (Python)** consumindo a **Zabbix API (JSON-RPC)**, frontend e
 
 ### Checagens realizadas pelo módulo de Housekeeping
 
+<img width="1280" height="473" alt="photo_2026-04-23_15-57-05" src="https://github.com/user-attachments/assets/9ac6a75c-bb6c-4308-a756-78193488e7de" />
+
 O backend (`analyze_housekeeping` em `app.py`) avalia, além da fila e do uso do processo housekeeper, se cada um dos seguintes módulos está com o housekeeping **habilitado** e se a **retenção** configurada é razoável:
 
 - Histórico (`hk_history_mode` / `hk_history`)
