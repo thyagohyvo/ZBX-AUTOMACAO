@@ -16,6 +16,7 @@ Backend em **Flask (Python)** consumindo a **Zabbix API (JSON-RPC)**, frontend e
 | **Importar Hosts** | Upload de CSV com preview/validação linha a linha (hostname, IP, grupo, templates, SNMP v1/v2/v3, tags, macros) antes da criação em massa via API. |
 | **Manutenção** | Criação, listagem (ativas/agendadas/expiradas) e encerramento de janelas de manutenção por host ou grupo. |
 | **Itens sem Dados** | Lista itens `not supported` ou sem coleta há mais de N horas, com filtro por grupo. |
+| **Auditoria** | Rastreia tudo que acontece no ambiente Zabbix via `auditlog.get`. Feed global de ações, timeline de alterações por host (criação, ativação/inativação, templates, interfaces, macros, tags) e histórico de ações por usuário (criou host, deletou host, criou interface, etc.), com quem fez, quando e o que mudou. |
 | **Top Problemas** | Ranking de hosts por volume de eventos de trigger em um período (24h/7d/30d), com problemas ativos e top triggers por host. |
 | **Histórico de Execuções** | Todas as execuções de dependências geram um log em arquivo `.txt`, listado e visualizável pela interface. |
 
@@ -33,6 +34,27 @@ O backend (`analyze_housekeeping` em `app.py`) avalia, além da fila e do uso do
 - Compressão do TimescaleDB, quando aplicável
 
 Cada verificação gera um item na lista de **Insights & Melhorias**, classificado por severidade (`critical`, `warning`, `improvement`), com descrição do problema e ação recomendada — visíveis na aba **Housekeeping** da interface.
+
+### Módulo de Auditoria (hosts e usuários)
+
+Usa o método nativo **`auditlog.get`** da Zabbix API (disponível a partir do Zabbix 5.4) — não requer acesso direto ao banco de dados. A aba é dividida em três sub-abas:
+
+- **Feed Global** — últimas ações executadas no ambiente, com filtro por período (1h a 30 dias), tipo de ação e tipo de recurso.
+- **Por Host** — seleciona um host e exibe a timeline de tudo que aconteceu com ele: quem criou, quando foi ativado/desativado, templates vinculados, interfaces de rede criadas, macros e tags adicionadas — e por qual usuário.
+- **Por Usuário** — seleciona um usuário e exibe o log de todas as ações que ele executou no ambiente (criação/edição/exclusão de hosts, interfaces, etc.), com contadores por tipo de recurso e por tipo de ação.
+
+Cada entrada de auditoria é normalizada no backend com: usuário, timestamp formatado, ação (`Criado`/`Atualizado`/`Deletado`/`Login`/`Logout`), tipo de recurso (Host, Usuário, Template, Grupo, Interface, Macro, Tag) e o `details` do Zabbix (JSON) já convertido em uma lista legível de mudanças.
+
+**Rotas relacionadas:**
+
+| Método | Rota | Descrição |
+|---|---|---|
+| `GET` | `/api/audit/feed` | Feed global de auditoria, com filtros de período, ação e tipo de recurso |
+| `GET` | `/api/audit/host/<hostid>` | Timeline de auditoria de um host específico (config, interfaces, macros, tags, templates) |
+| `GET` | `/api/audit/user/<userid>` | Log de ações executadas por um usuário específico |
+| `GET` | `/api/audit/users` | Lista de usuários disponíveis para o filtro |
+
+> Requer que o token da API tenha permissão de leitura no módulo `Audit log` (`auditlog.get`).
 
 ---
 
@@ -87,7 +109,7 @@ export ZABBIX_URL="http://seu-servidor:8080/api_jsonrpc.php"
 export ZABBIX_TOKEN="seu-token-aqui"
 ```
 
-O token precisa ter permissão de leitura/escrita nos módulos utilizados: `host`, `hostgroup`, `template`, `item`, `trigger`, `event`, `problem`, `maintenance`, `user`, `settings` e `housekeeping` (Zabbix 6.0+ para `housekeeping.get`).
+O token precisa ter permissão de leitura/escrita nos módulos utilizados: `host`, `hostgroup`, `template`, `item`, `trigger`, `event`, `problem`, `maintenance`, `user`, `settings`, `housekeeping` (Zabbix 6.0+ para `housekeeping.get`) e `auditlog` (Zabbix 5.4+ para a aba de Auditoria).
 
 ---
 
