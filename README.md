@@ -42,6 +42,9 @@ Cada verificação gera um item na lista de **Insights & Melhorias**, classifica
 
 ### Módulo de Auditoria (hosts e usuários)
 
+<img width="1030" height="900" alt="04" src="https://github.com/user-attachments/assets/3070b653-480e-4e11-9c75-26d9d6ee41bf" />
+
+
 Usa o método nativo **`auditlog.get`** da Zabbix API (disponível a partir do Zabbix 5.4) - não requer acesso direto ao banco de dados. A aba é dividida em três sub-abas:
 
 - **Feed Global** - últimas ações executadas no ambiente, com filtro por período (1h a 30 dias), tipo de ação e tipo de recurso.
