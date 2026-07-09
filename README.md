@@ -27,21 +27,21 @@ O backend (`analyze_housekeeping` em `app.py`) avalia, além da fila e do uso do
 - Histórico (`hk_history_mode` / `hk_history`)
 - Trends (`hk_trends_mode` / `hk_trends`)
 - Eventos (`hk_events_mode` / `hk_events_trigger`)
-- **Auditoria / Audit log (`hk_audit_mode` / `hk_audit`)** — alerta se o housekeeping do audit log estiver desabilitado, e se a retenção configurada ultrapassar 365 dias
+- **Auditoria / Audit log (`hk_audit_mode` / `hk_audit`)** - alerta se o housekeeping do audit log estiver desabilitado, e se a retenção configurada ultrapassar 365 dias
 - Sessões de usuário (`hk_sessions_mode`)
 - Serviços / SLA (`hk_services_mode`)
 - Override global de histórico e de trends (`hk_history_global` / `hk_trends_global`)
 - Compressão do TimescaleDB, quando aplicável
 
-Cada verificação gera um item na lista de **Insights & Melhorias**, classificado por severidade (`critical`, `warning`, `improvement`), com descrição do problema e ação recomendada — visíveis na aba **Housekeeping** da interface.
+Cada verificação gera um item na lista de **Insights & Melhorias**, classificado por severidade (`critical`, `warning`, `improvement`), com descrição do problema e ação recomendada - visíveis na aba **Housekeeping** da interface.
 
 ### Módulo de Auditoria (hosts e usuários)
 
-Usa o método nativo **`auditlog.get`** da Zabbix API (disponível a partir do Zabbix 5.4) — não requer acesso direto ao banco de dados. A aba é dividida em três sub-abas:
+Usa o método nativo **`auditlog.get`** da Zabbix API (disponível a partir do Zabbix 5.4) - não requer acesso direto ao banco de dados. A aba é dividida em três sub-abas:
 
-- **Feed Global** — últimas ações executadas no ambiente, com filtro por período (1h a 30 dias), tipo de ação e tipo de recurso.
-- **Por Host** — seleciona um host e exibe a timeline de tudo que aconteceu com ele: quem criou, quando foi ativado/desativado, templates vinculados, interfaces de rede criadas, macros e tags adicionadas — e por qual usuário.
-- **Por Usuário** — seleciona um usuário e exibe o log de todas as ações que ele executou no ambiente (criação/edição/exclusão de hosts, interfaces, etc.), com contadores por tipo de recurso e por tipo de ação.
+- **Feed Global** - últimas ações executadas no ambiente, com filtro por período (1h a 30 dias), tipo de ação e tipo de recurso.
+- **Por Host** - seleciona um host e exibe a timeline de tudo que aconteceu com ele: quem criou, quando foi ativado/desativado, templates vinculados, interfaces de rede criadas, macros e tags adicionadas - e por qual usuário.
+- **Por Usuário** - seleciona um usuário e exibe o log de todas as ações que ele executou no ambiente (criação/edição/exclusão de hosts, interfaces, etc.), com contadores por tipo de recurso e por tipo de ação.
 
 Cada entrada de auditoria é normalizada no backend com: usuário, timestamp formatado, ação (`Criado`/`Atualizado`/`Deletado`/`Login`/`Logout`), tipo de recurso (Host, Usuário, Template, Grupo, Interface, Macro, Tag) e o `details` do Zabbix (JSON) já convertido em uma lista legível de mudanças.
 
@@ -71,13 +71,13 @@ Cada entrada de auditoria é normalizada no backend com: usuário, timestamp for
 
 ```
 .
-├── app.py               # Backend Flask — rotas, integração com Zabbix API e regras de negócio
+├── app.py               # Backend Flask - rotas, integração com Zabbix API e regras de negócio
 ├── templates/
 │   └── index.html       # Interface (SPA renderizada por troca de <div> visível)
 ├── static/
 │   └── js/
 │       └── app.js       # Lógica de frontend (fetch às rotas /api/*, renderização)
-└── logs/                # Gerado automaticamente — logs das execuções de dependências
+└── logs/                # Gerado automaticamente - logs das execuções de dependências
 ```
 
 > ⚠️ O `index.html` referencia `/static/js/app.js`, então mantenha `app.js` dentro de `static/js/` e o `index.html` dentro de `templates/`, conforme a convenção do Flask.
